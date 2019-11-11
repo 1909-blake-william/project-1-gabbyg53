@@ -3,13 +3,44 @@
   <display-name>ERS</display-name>
   
   <servlet>
- 		<servlet-name>MyTestServlet</servlet-name>
- 		<servlet-class>com.revature.servlets.TestServlet</servlet-class>
+ 	<servlet-name>MyTestServlet</servlet-name>
+ 	<servlet-class>com.revature.servlets.TestServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+		<servlet-name>UserServlet</servlet-name>
+		<servlet-class>com.revature.servlets.UserServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>AuthServlet</servlet-name>
+  	<servlet-class>com.revature.servlets.AuthServlet</servlet-class>
+  </servlet>
+  
+   <servlet>
+  	<servlet-name>ReimbursementServlet</servlet-name>
+  	<servlet-class>com.revature.servlets.ReimbursementServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
  	<servlet-name>MyTestServlet</servlet-name>
  	<url-pattern>/test</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+		<servlet-name>UserServlet</servlet-name>
+		<url-pattern>/users/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+		<servlet-name>ReimbursementServlet</servlet-name>
+		<url-pattern>/reimbursements/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+ 	<servlet-name>AuthServlet</servlet-name>
+ 	<url-pattern>/auth/*</url-pattern>
+  </servlet-mapping>
+
 
 </web-app>

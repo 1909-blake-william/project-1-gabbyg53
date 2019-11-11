@@ -21,6 +21,8 @@ public interface ReimbursementDao {
 	//List<Reimbursement> findByAuthorAndStatus(String username, int statusId);
 	
 	//patchput reimbursements
+	//void viewPendingStatus
+	//void
 	
 
 }
