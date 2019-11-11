@@ -16,8 +16,8 @@ public interface ReimbursementDao {
 //	List<Reimbursement> findByUserId(int userId);
 	List<Reimbursement> findByUsername(String username);
 	
-	List<Reimbursement> findByStatus(int statusId);
-	
+	//List<Reimbursement> findByStatus(int statusId);
+	List<Reimbursement> findByStatus(String status);
 	//List<Reimbursement> findByAuthorAndStatus(String username, int statusId);
 	
 	//patchput reimbursements
