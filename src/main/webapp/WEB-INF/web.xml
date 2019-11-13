@@ -8,8 +8,8 @@
   </servlet>
   
   <servlet>
-		<servlet-name>UserServlet</servlet-name>
-		<servlet-class>com.revature.servlets.UserServlet</servlet-class>
+	<servlet-name>UserServlet</servlet-name>
+	<servlet-class>com.revature.servlets.UserServlet</servlet-class>
   </servlet>
   
   <servlet>

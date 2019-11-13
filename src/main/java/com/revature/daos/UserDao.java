@@ -16,6 +16,8 @@ public interface UserDao {
 	
 	User findByUsernameAndPassword(String username, String password);
 	
+	User findRole(String role);
+	
 	//void authorizeReimbursementRequest(Reimbursement reimb, int id); //if id = admin can change reimb
 
 }

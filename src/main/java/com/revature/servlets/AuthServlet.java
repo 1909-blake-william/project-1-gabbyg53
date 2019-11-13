@@ -18,7 +18,7 @@ public class AuthServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println(req.getRequestURL());
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
 		resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		resp.addHeader("Access-Control-Allow-Headers",
 				"Origin, Methods, Credentials, X-Requested-With, Content-Type, Accept");
@@ -45,22 +45,18 @@ public class AuthServlet extends HttpServlet {
 				return;
 			}
 		}
-		// TODO Auto-generated method stub
-		//super.doPost(req, resp);
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.getWriter().write("hello");
 		
-		if ("/ERS/auth/login".equals(req.getRequestURI())) {
+		if ("/ERS/auth/session-user".equals(req.getRequestURI())) { //login
 			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
 			resp.getWriter().write(json);
 			//return resp.g
 		}		
-		// TODO Auto-generated method stub
-		//super.doGet(req, resp);
 	}
 
 }

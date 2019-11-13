@@ -6,6 +6,7 @@ import com.revature.models.Reimbursement;
 
 public interface ReimbursementDao {
 	ReimbursementDao currentIplementation = new ReimbursementDaoSQL();
+	UserDao currentImplementation = new UserDaoSQL();
 	
 	int save(Reimbursement reimb);
 	
@@ -18,11 +19,10 @@ public interface ReimbursementDao {
 	
 	//List<Reimbursement> findByStatus(int statusId);
 	List<Reimbursement> findByStatus(String status);
-	//List<Reimbursement> findByAuthorAndStatus(String username, int statusId);
 	
-	//patchput reimbursements
-	//void viewPendingStatus
-	//void
-	
+	List<Reimbursement> findByUsernameAndPassword(String username, String password);
 
+	List<Reimbursement> viewPendingStatus(String s);
+
+	void managerUpdateStatus();
 }

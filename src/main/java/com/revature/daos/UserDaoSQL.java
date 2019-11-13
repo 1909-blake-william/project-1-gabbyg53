@@ -147,4 +147,28 @@ public class UserDaoSQL implements UserDao {
 		}
 	}
 
+	@Override
+	public User findRole(String role) {
+		log.debug("attempting to find user by their role from DB");
+		try (Connection c = ConnectionUtil.getConnection()) {
+
+			String sql = "SELECT * FROM ERS_USERS "
+					+ "LEFT JOIN ERS_USER_ROLES ON (ERS_USERS.user_role_id = ERS_USER_ROLES.ers_user_role_id)"
+					+ "WHERE ERS_USER_ROLES.user_role = ?";
+
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, role);
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return extractUser(rs);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

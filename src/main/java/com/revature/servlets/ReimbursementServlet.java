@@ -22,7 +22,7 @@ public class ReimbursementServlet extends HttpServlet {
 		super.service(req, resp);
 		System.out.println("To context param: " + req.getServletContext().getInitParameter("To"));
 
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
 		resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		resp.addHeader("Access-Control-Allow-Headers",
 				"Origin, Methods, Credentials, X-Requested-With, Content-Type, Accept");
@@ -66,16 +66,6 @@ public class ReimbursementServlet extends HttpServlet {
 
 				resp.getWriter().write(json);
 				resp.setStatus(201); // created status code
-	}
-	
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doDelete(req, resp);
-		
-//		String idString = req.getParameter("id");
-//		int id = Integer.parseInt(idString);
-//		pokeDao.release(id);
 	}
 
 }

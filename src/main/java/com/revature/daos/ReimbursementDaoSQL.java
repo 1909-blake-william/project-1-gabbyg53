@@ -156,4 +156,64 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 		}
 	}
 
+	@Override
+	public List<Reimbursement> findByUsernameAndPassword(String username, String password) {
+		log.debug("attempting to find reimbursements by credentials from DB");
+		try (Connection c = ConnectionUtil.getConnection()) {
+
+			String sql = "SELECT * FROM ERS_REIMBURSEMENT " 
+					+ "LEFT JOIN ERS_USERS ON (ERS_REIMBURSEMENT.reimb_author = ERS_USERS.ers_user_id) "
+					+ "WHERE ers_username = ? AND ers_password = ?";
+
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, username);
+			ps.setString(2, password);
+
+			ResultSet rs = ps.executeQuery();
+			List<Reimbursement> r = new ArrayList<>();
+			while (rs.next()) {
+				r.add(extractReimbursement(rs));
+			}
+			return r;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Reimbursement> viewPendingStatus(String s) {
+		log.debug("attempting to find reimbursements with pending status by credentials from DB");
+		try (Connection c = ConnectionUtil.getConnection()) {
+
+			//if (UserDao.currentIplementation.)
+			
+			String sql = "SELECT * FROM ERS_REIMBURSEMENT " 
+					+ "LEFT JOIN ERS_REIMBURSEMENT_STATUS ON (ERS_REIMBURSEMENT.reimb_status_id = ERS_REIMBURSEMENT_STATUS.reimb_status_id) "
+					+ "WHERE ERS_REIMBURSEMENT_STATUS.reimb_status = ?";
+			
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, s);
+
+			ResultSet rs = ps.executeQuery();
+			List<Reimbursement> r = new ArrayList<>();
+			while (rs.next()) {
+				r.add(extractReimbursement(rs));
+			}
+			return r;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	
+	}
+
+	@Override
+	public void managerUpdateStatus() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
