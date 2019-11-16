@@ -14,6 +14,7 @@ import com.revature.models.User;
 public class AuthServlet extends HttpServlet {
 	
 	private UserDao userDao = UserDao.currentIplementation;
+	ObjectMapper om = new ObjectMapper();
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +33,6 @@ public class AuthServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("uri = " + req.getRequestURI());
 		if ("/ERS/auth/login".equals(req.getRequestURI())) {
-			ObjectMapper om = new ObjectMapper();
 			User credentials = (User) om.readValue(req.getReader(), User.class);
 			User loggedInUser = userDao.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
 			if (loggedInUser == null) {
@@ -45,18 +45,26 @@ public class AuthServlet extends HttpServlet {
 				return;
 			}
 		}
+		else if ("/ERS/auth/logout".equals(req.getRequestURI())){
+			User loggedInUser = null;
+			resp.setStatus(201);
+			req.getSession().invalidate();//setAttribute("user", loggedInUser);
+			return;
+		}
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.getWriter().write("hello");
+		//resp.getWriter().write("hello");
 		
 		if ("/ERS/auth/session-user".equals(req.getRequestURI())) { //login
 			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
 			resp.getWriter().write(json);
+			System.out.println(json);
 			//return resp.g
-		}		
+		}	
+		System.out.println(req.getSession().getAttribute("user"));
 	}
 
 }

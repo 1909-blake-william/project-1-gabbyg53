@@ -66,9 +66,7 @@ function addReimbursementToTableSafe(reimbursement) {
     row.appendChild(typeData);
 
     // append the row into the table
-    if (reimbursement.author === currentUser.id) {
-        document.getElementById('reimbursement-table-body').appendChild(row);
-    }
+    document.getElementById('reimbursement-table-body').appendChild(row);
     console.log(reimbursement);
 
 }
@@ -109,7 +107,7 @@ function refreshTable() {
         .catch(console.log);
 }
 
- function getCurrentUserInfo() {
+function getCurrentUserInfo() {
      fetch('http://localhost:8080/ERS/auth/session-user', {
          credentials: 'include'
      })
@@ -122,13 +120,13 @@ function refreshTable() {
          console.log(currentUser.username);
      })
      .catch(err => {
-         console.log(err);
+         //console.log(err);
          //document.getElementById('error-id').innerText = err;
          window.location = '/login/login.html'; ///login/login.html
      })
- }
+}
 
- function logout(event) {
+function logout(event) {
     event.preventDefault();
     fetch('http://localhost:8080/ERS/auth/logout', {
         method: 'POST',
@@ -142,4 +140,13 @@ function refreshTable() {
         getCurrentUserInfo();
     })
 }
+
+function updateToApprove(reimbId) {
+
+}
+
+function updateToDeny(reimbId) {
+    
+}
+
 getCurrentUserInfo();

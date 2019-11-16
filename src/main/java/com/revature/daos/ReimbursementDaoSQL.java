@@ -35,18 +35,18 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 		try (Connection c = ConnectionUtil.getConnection()) {
 
 			String sql = "INSERT INTO ERS_REIMBURSEMENT (reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) "
-					+ "VALUES (ERS_REIMBURSEMENT_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "VALUES (ERS_REIMBURSEMENT_SEQ.nextval, ?, CURRENT_TIMESTAMP, null, ?, ?, null, ?, ?)"; //current timestamp
 			
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1, reimb.getId());
-			ps.setDouble(2, reimb.getAmount());
-			ps.setTimestamp(3, reimb.getDateSubmitted());
-			ps.setTimestamp(4, reimb.getResolveDate());
-			ps.setString(5, reimb.getDescription());
-			ps.setInt(6, reimb.getAuthor());
-			ps.setInt(7, reimb.getResolver());
-			ps.setInt(8, reimb.getStatus());
-			ps.setInt(9, reimb.getType());
+			//ps.setInt(1, reimb.getId());
+			ps.setDouble(1, reimb.getAmount());
+			//ps.setTimestamp(3, reimb.getDateSubmitted());
+			//ps.setTimestamp(3, reimb.getResolveDate());
+			ps.setString(2, reimb.getDescription());
+			ps.setInt(3, reimb.getAuthor());
+			//ps.setInt(6, reimb.getResolver());
+			ps.setInt(4, reimb.getStatus());
+			ps.setInt(5, reimb.getType());
 			
 			return ps.executeUpdate();
 
@@ -211,9 +211,22 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	}
 
 	@Override
-	public void managerUpdateStatus() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void managerUpdateStatus(int statusId, int resolverId, int reimbId) {
+		log.debug("attempting to update reimbursements to be either approved or deny");
+		try (Connection c = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE ERS_REIMBURSEMENT "
+					+ "SET reimb_status_id = ?, reimb_resolver = ?, reimb_resolved = CURRENT_TIMESTAMP "
+					+ "WHERE reimb_id = ?";
+			
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, statusId);
+			ps.setInt(2, resolverId);
+			ps.setInt(3, reimbId);
 
+			ps.executeQuery();		
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

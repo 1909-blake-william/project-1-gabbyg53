@@ -14,7 +14,6 @@
 </head>
 <body>
     
-    
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Revamon</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
@@ -31,12 +30,12 @@
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">Dropdown</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown05">
-                         <!-- <a class="dropdown-item" href="#">Profile</a> -->
-                         <a class="dropdown-item" href="#"  onclick="logout(event)">Logout</a>
+                        <a class="dropdown-item" href="#"  onclick="logout(event)">Logout</a>
                     </div>
                 </li>
             </ul>
-             <form class="form-inline my-2 my-md-0">
+
+            <form class="form-inline my-2 my-md-0">
                 <input class="form-control" type="text" placeholder="Search">
             </form>
             <ul class="navbar-nav">
@@ -44,10 +43,6 @@
                     <a id="users-name" class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"></a>
                     <div class="dropdown-menu" aria-labelledby="dropdown05">
-                        <a class="dropdown-item" href="#">Profile</a>
-                <!--        <a class="dropdown-item" href="#" active>View Reimbursements</a>
-                        <a class="dropdown-item" href="#">Add Reimbursements</a>
-                        <a class="dropdown-item" href="#">Reimbursement Status</a> -->
                         <a class="dropdown-item" href="#"  onclick="logout(event)">Logout</a>
                     </div>
                 </li>
@@ -62,38 +57,16 @@
                 <th scope="col">DateSubmited</th>
                 <th scope="col">ResolveDate</th>
                 <th scope="col">Memo</th>
-                 <th scope="col">Author</th>
+                <th scope="col">Author</th>
                 <th scope="col">Resolver</th>
                 <th scope="col">Status</th>
                 <th scope="col">Type</th>
             </tr>
         </thead>
         <tbody id="reimbursement-table-body">
- 
+
         </tbody>
     </table>
-
-    <h3>Submit a new reimbursement</h3>
-    <form id="new-reimbursement-form" onsubmit="newReimbursementSubmit(event)">
-        <div class="form-group">
-            <label for="reimbursement-amount-input">Amount:</label>
-            <input type="number" class="form-control" id="reimbursement-amount-input" placeholder="0.00">
-        </div>
-        <div class="form-group">
-            <label for="reimbursement-memo-input">Description:</label>
-            <input type="text" class="form-control" id="reimbursement-memo-input" placeholder="why should we reimburse you?">
-        </div>
-        <div class="form-group">
-            <label for="reimbursement-type-select">Type</label>
-            <select class="form-control" id="reimbursement-type-select">
-                <option>lodging</option>
-                <option>travel</option>
-                <option>food</option>
-                <option>other</option>
-            </select>
-        </div>
-        <button class="btn btn-danger" type="submit">Submit</button>
-    </form>
 
 </body>
 
@@ -108,6 +81,6 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
 
-<script src="view-reimb.js"></script>
+<script src="manager.js"></script>
 
 </html>

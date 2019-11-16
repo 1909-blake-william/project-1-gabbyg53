@@ -20,9 +20,10 @@ public interface ReimbursementDao {
 	//List<Reimbursement> findByStatus(int statusId);
 	List<Reimbursement> findByStatus(String status);
 	
+	//find by userRole
 	List<Reimbursement> findByUsernameAndPassword(String username, String password);
 
 	List<Reimbursement> viewPendingStatus(String s);
 
-	void managerUpdateStatus();
+	void managerUpdateStatus(int statusId, int resolverId, int reimbId);
 }

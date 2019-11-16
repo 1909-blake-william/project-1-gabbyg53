@@ -35,10 +35,11 @@ public class ReimbursementServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		List<Reimbursement> reimbs;
 		
-		String username = req.getParameter("ers_username");
+		//String username = req.getParameter("ers_username"); //username
+		String role = req.getParameter("ers_user_role");
 		
-		if (username != null) { // find by username
-			reimbs = reimbDao.findByUsername(username);
+		if (role != null) { // find by username
+			reimbs = reimbDao.findByUsername(role);
 		} else { // find all
 			reimbs = reimbDao.findAll();
 		}
@@ -66,6 +67,22 @@ public class ReimbursementServlet extends HttpServlet {
 
 				resp.getWriter().write(json);
 				resp.setStatus(201); // created status code
+	}
+	
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		ObjectMapper om = new ObjectMapper();
+		Reimbursement r = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+
+		System.out.println(r);
+
+		reimbDao.managerUpdateStatus(r.getStatus(), r.getResolver(), r.getId());  //save(r);
+
+		//String json = om.writeValueAsString(r);
+
+		//resp.getWriter().write(json);
+		resp.setStatus(201); // created status code
 	}
 
 }

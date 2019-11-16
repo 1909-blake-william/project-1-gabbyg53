@@ -15,6 +15,7 @@ import com.revature.models.User;
 public class UserServlet extends HttpServlet {
 	
 	private UserDao userDao = UserDao.currentIplementation;
+	ObjectMapper om = new ObjectMapper();
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,6 +29,7 @@ public class UserServlet extends HttpServlet {
 		resp.setContentType("application/json");
 	}
 	
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -35,7 +37,6 @@ public class UserServlet extends HttpServlet {
 
 		users = userDao.findAll();
 
-		ObjectMapper om = new ObjectMapper();
 		String json = om.writeValueAsString(users);
 
 		resp.addHeader("content-type", "application/json");
