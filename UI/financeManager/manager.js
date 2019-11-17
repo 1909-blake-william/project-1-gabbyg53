@@ -121,6 +121,7 @@ function updateToApprove(reimbId) {
         credentials: 'include'
     })
     .then(resp =>{
+        console.log("approved");
         if (resp.status === 201) {
             refreshTable();
         }
@@ -141,6 +142,7 @@ function updateToDeny(reimbId) {
         credentials: 'include',
     })
     .then(resp =>{
+        console.log("denied");
         if (resp.status === 201) {
             refreshTable();
         }

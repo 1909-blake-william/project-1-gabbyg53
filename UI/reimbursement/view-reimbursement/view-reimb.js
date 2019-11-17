@@ -91,7 +91,7 @@ function getReimbFromInputs() {
         description: reimbMemo,
         author: reimbAuthor,
         resolver: null,
-        status: 1,
+        status: 2,
         type: typeId
     }
     console.log(reimbursement);
