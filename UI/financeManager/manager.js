@@ -112,7 +112,7 @@ function logout(event) {
 }
 
 function updateToApprove(reimbId) {
-    fetch(`http://localhost:8080/ERS/reimbursements/status=2/resolver=${currentUser.id}/id=${reimbId}`,{ //update
+    fetch(`http://localhost:8080/ERS/reimbursements?status=2&resolver=${currentUser.id}&id=${reimbId}`,{ //update
         method: 'PUT',
         headers: {
             'content-type': 'application/json'
@@ -121,7 +121,7 @@ function updateToApprove(reimbId) {
         credentials: 'include'
     })
     .then(resp =>{
-        if (res.status === 201) {
+        if (resp.status === 201) {
             refreshTable();
         }
         else {
@@ -132,7 +132,7 @@ function updateToApprove(reimbId) {
 }
 
 function updateToDeny(reimbId) {
-    fetch(`http://localhost:8080/ERS/reimbursements/status=3/resolver=${currentUser.id}/id=${reimbId}`,{
+    fetch(`http://localhost:8080/ERS/reimbursements?status=3&resolver=${currentUser.id}&id=${reimbId}`,{
         method: 'PUT',
         headers: {
             'content-type': 'application/json'
@@ -141,7 +141,7 @@ function updateToDeny(reimbId) {
         credentials: 'include',
     })
     .then(resp =>{
-        if (res.status === 201) {
+        if (resp.status === 201) {
             refreshTable();
         }
         else {
