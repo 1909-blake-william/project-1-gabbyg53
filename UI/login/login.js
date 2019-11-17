@@ -26,10 +26,10 @@ function login(event) {
       //       console.log('navigate to reimbursements')
       //           console.log();
         if (data.role === 0) {
-            console.log(data);
+            //console.log(data);
              window.location = '/financeManager/manager.html';
          } else if (data.role === 1) {
-            console.log(data);
+           // console.log(data);
             window.location = '/reimbursement/view-reimbursement/view-reimb.html';
          } 
          else {

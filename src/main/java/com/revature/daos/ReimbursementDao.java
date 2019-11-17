@@ -17,13 +17,13 @@ public interface ReimbursementDao {
 //	List<Reimbursement> findByUserId(int userId);
 	List<Reimbursement> findByUsername(String username);
 	
-	//List<Reimbursement> findByStatus(int statusId);
+	List<Reimbursement> findByStatus(int statusId);
 	List<Reimbursement> findByStatus(String status);
 	
 	//find by userRole
 	List<Reimbursement> findByUsernameAndPassword(String username, String password);
 
-	List<Reimbursement> viewPendingStatus(String s);
+	//List<Reimbursement> viewPendingStatus(String s);
 
 	void managerUpdateStatus(int statusId, int resolverId, int reimbId);
 }

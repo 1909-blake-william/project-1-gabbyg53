@@ -1,29 +1,6 @@
 let currentUser;
 //get all rows on page load from db, then append row to table
 
-function newReimbursementSubmit(event) {
-    event.preventDefault(); // stop page from refreshing
-    console.log('submitted');
-    
-    const reimbs = getReimbFromInputs();
-    console.log(reimbs);
-
-    fetch('http://localhost:8080/ERS/reimbursements/view-reimbursement', {
-        method: 'POST',
-        body: JSON.stringify(reimbs),
-        headers: {
-            'content-type': 'application/json'
-        },
-        mode: 'cors',
-    })
-    .then(res => res.json())
-    .then(data => {
-        addReimbursementToTableSafe(data);
-        console.log(data);
-    })
-    .catch(err => console.log(err));
-}
-
 function addReimbursementToTableSafe(reimbursement) {
 
     // create the row element
@@ -59,47 +36,39 @@ function addReimbursementToTableSafe(reimbursement) {
 
     const statusData = document.createElement('td');
     statusData.innerText = reimbursement.status; //if admin select
-    row.appendChild(statusData);
+    row.appendChild(statusData); //if status === '2' set innertext 'pending'
 
     const typeData = document.createElement('td'); //select
     typeData.innerText = reimbursement.type;
     row.appendChild(typeData);
 
+    if (reimbursement.status === 2) { //pending
+        const approveData = document.createElement('button');
+        approveData.innerText = 1;
+        //approveData.onclick
+        approveData.setAttribute('onclick', 'updateToApprove(this.value)');
+        approveData.setAttribute('value', `${reimbursement.id}`);
+        row.appendChild(approveData);
+
+        const denyData = document.createElement('button');
+        denyData.innerText = 0;
+        denyData.setAttribute('onclick', 'updateToDeny(this.value)');
+        denyData.setAttribute('value', `${reimbursement.id}`);
+        row.appendChild(denyData);
+    }
+
     // append the row into the table
     document.getElementById('reimbursement-table-body').appendChild(row);
-    console.log(reimbursement);
-
-}
-
-function getReimbFromInputs() {
-    const reimbAmount = document.getElementById('reimbursement-amount-input').value;
-    const reimbMemo = document.getElementById('reimbursement-memo-input').value;
-    const reimbAuthor = currentUser.id;
-    const reimbType = document.getElementById('reimbursement-type-select').value;
-    let typeId;
-    if (reimbType === 'lodging') typeId = 1;
-    else if (reimbType === 'travel') typeId = 2;
-    else if (reimbType === 'food') typeId = 3;
-    else if (reimbType === 'other') typeId = 4;
-
-    const reimbursement = {
-        amount: reimbAmount,
-        dateSubmitted: new Date().toDateString,
-        resolveDate: null,
-        description: reimbMemo,
-        author: reimbAuthor,
-        resolver: null,
-        status: 1,
-        type: typeId
-    }
-    console.log(reimbursement);
-    return reimbursement;
+    //console.log(reimbursement);
 }
 
 
 function refreshTable() {
     //string interpoloation fetch?
-    fetch('http://localhost:8080/ERS/reimbursements')
+    fetch('http://localhost:8080/ERS/reimbursements', {
+        credentials: 'include',
+        mode: 'cors',
+    })
         .then(res => res.json())
         .then(data => {
             data.forEach(addReimbursementToTableSafe)
@@ -109,18 +78,19 @@ function refreshTable() {
 
 function getCurrentUserInfo() {
      fetch('http://localhost:8080/ERS/auth/session-user', {
-         credentials: 'include'
+         credentials: 'include',
+         mode: 'cors'
      })
      .then(resp => resp.json())
      .then(data => {
-         console.log(data.username);
+         //console.log(data.username);
       //   document.getElementById('users-name').innerText = data.username
          refreshTable();
          currentUser = data;
-         console.log(currentUser.username);
+         //console.log(currentUser.username);
      })
      .catch(err => {
-         //console.log(err);
+         console.log(err);
          //document.getElementById('error-id').innerText = err;
          window.location = '/login/login.html'; ///login/login.html
      })
@@ -134,7 +104,7 @@ function logout(event) {
             'content-type': 'application/json'
         },
         mode: 'cors',
-        credentials: 'include',
+        credentials: 'include'
     })
     .then(resp => {
         getCurrentUserInfo();
@@ -142,11 +112,90 @@ function logout(event) {
 }
 
 function updateToApprove(reimbId) {
-
+    fetch(`http://localhost:8080/ERS/reimbursements/status=2/resolver=${currentUser.id}/id=${reimbId}`,{ //update
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        mode: 'cors',
+        credentials: 'include'
+    })
+    .then(resp =>{
+        if (res.status === 201) {
+            refreshTable();
+        }
+        else {
+            console.log("error with approving reimbursement");
+        }
+    })
+    .catch(err => console.log(err));
 }
 
 function updateToDeny(reimbId) {
-    
+    fetch(`http://localhost:8080/ERS/reimbursements/status=3/resolver=${currentUser.id}/id=${reimbId}`,{
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        mode: 'cors',
+        credentials: 'include',
+    })
+    .then(resp =>{
+        if (res.status === 201) {
+            refreshTable();
+        }
+        else {
+            console.log("error with denying reimbursement");
+        }
+    })
+    .catch(err => console.log(err));
+}
+
+function filterByStatus(event) {
+    event.preventDefault();
+    console.log("please");
+    const status = document.getElementById('filter-by-status-select').value;
+    console.log(status);
+    if (status === "total") {
+        fetch(`http://localhost:8080/ERS/reimbursements`,{
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json'
+        },
+        mode: 'cors',
+        credentials: 'include',
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        let numRows = document.getElementById('reimbursement-table-body').rows.length
+            for (let i = numRows-1; i >= 0; i--) {
+                document.getElementById('reimbursement-table-body').deleteRow(i)
+            }
+         data.forEach(addReimbursementToTableSafe);
+         //addReimbursementToTableSafe(data);
+    })
+    .catch(err => console.log(err));
+    } else {
+
+    fetch(`http://localhost:8080/ERS/reimbursements/status/${status}`,{
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json'
+        },
+        mode: 'cors',
+        credentials: 'include',
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        let numRows = document.getElementById('reimbursement-table-body').rows.length
+            for (let i = numRows-1; i >= 0; i--) {
+                document.getElementById('reimbursement-table-body').deleteRow(i)
+            }
+         data.forEach(addReimbursementToTableSafe);
+         //addReimbursementToTableSafe(data);
+    })
+    .catch(err => console.log(err));
+    }
 }
 
 getCurrentUserInfo();

@@ -55,16 +55,12 @@ public class AuthServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//resp.getWriter().write("hello");
-		
 		if ("/ERS/auth/session-user".equals(req.getRequestURI())) { //login
-			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
 			resp.getWriter().write(json);
 			System.out.println(json);
 			//return resp.g
 		}	
-		System.out.println(req.getSession().getAttribute("user"));
+		//System.out.println(req.getSession().getAttribute("user"));
 	}
-
 }

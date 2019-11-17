@@ -36,7 +36,8 @@ public class ManualTestDriver {
 		System.out.println("find manager");
 		System.out.println(userDao.findRole(r));
 		
-		String s = "pending";
+		//String s = "pending";
+		int s = 2;
 		System.out.println("find all pending status");
 		reimbDao.findByStatus(s).forEach(stat -> {
 			System.out.println(stat);
@@ -44,8 +45,8 @@ public class ManualTestDriver {
 
 		Timestamp t = new Timestamp(System.currentTimeMillis());
 	
-		Reimbursement re = new Reimbursement(59, 50.00, t, null, "wkms",1, 0, 0, 4);
-		reimbDao.save(re);
-		System.out.println(re);
+//		Reimbursement re = new Reimbursement(59, 50.00, t, null, "wkms",1, 0, 0, 4);
+//		reimbDao.save(re);
+//		System.out.println(re);
 	}
 }

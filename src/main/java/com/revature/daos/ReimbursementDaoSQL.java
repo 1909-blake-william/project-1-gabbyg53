@@ -130,25 +130,38 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	public List<Reimbursement> findByStatus(String status) {
 		log.debug("attempting to find transaction by user id from DB");
 		try (Connection c = ConnectionUtil.getConnection()) {
-
+System.out.println("hi from here");
+System.out.println(status);
+			int s = -1;
+			if (status.equals("pending")) {
+				System.out.println("pending if statement");
+				s = 2;
+			} else if (status.equals("approved")) {
+				s = 1;
+			}
+			else if (status.contentEquals("denied")) {
+				s = 0;
+			}
+			System.out.println("s = "+s);
+			
 //			String sql = "SELECT * FROM ERS_REIMBURSEMENT "
 //				+ "LEFT JOIN ERS_USERS ON (ERS_REIMBURSEMENT.reimb_author = ERS_USERS.ers_user_id) "
 //				+ "WHERE ERS_USERS.ers_user_id = ?";
 			
-			String sql = "SELECT * FROM ERS_REIMBURSEMENT "
-					+ "LEFT JOIN ERS_USERS ON (ERS_REIMBURSEMENT.reimb_author = ERS_USERS.ers_user_id) "
-					+ "LEFT JOIN ERS_REIMBURSEMENT_STATUS ON (ERS_REIMBURSEMENT.reimb_status_id = ERS_REIMBURSEMENT_STATUS.reimb_status_id) "
-					+ "WHERE ERS_REIMBURSEMENT_STATUS.reimb_status = ?";		
+			String sql = "SELECT * FROM ERS_REIMBURSEMENT " 
+					+ "LEFT JOIN ERS_REIMBURSEMENT_STATUS USING (reimb_status_id) "
+					+ "WHERE reimb_status_id = ?";		
 			
 			PreparedStatement ps = c.prepareStatement(sql);
-//			ps.setInt(1, statusId);
-			ps.setString(1, status);
+			ps.setInt(1, s);
+			//ps.setString(1, status);
 
 			ResultSet rs = ps.executeQuery();
 			List<Reimbursement> t = new ArrayList<>();
 			while (rs.next()) {
 				t.add(extractReimbursement(rs));
 			}
+			System.out.println(t);
 			return t;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -183,18 +196,18 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	}
 
 	@Override
-	public List<Reimbursement> viewPendingStatus(String s) {
+	public List<Reimbursement> findByStatus(int statusId) {
 		log.debug("attempting to find reimbursements with pending status by credentials from DB");
 		try (Connection c = ConnectionUtil.getConnection()) {
 
 			//if (UserDao.currentIplementation.)
 			
 			String sql = "SELECT * FROM ERS_REIMBURSEMENT " 
-					+ "LEFT JOIN ERS_REIMBURSEMENT_STATUS ON (ERS_REIMBURSEMENT.reimb_status_id = ERS_REIMBURSEMENT_STATUS.reimb_status_id) "
-					+ "WHERE ERS_REIMBURSEMENT_STATUS.reimb_status = ?";
+					+ "LEFT JOIN ERS_REIMBURSEMENT_STATUS USING (reimb_status_id) "
+					+ "WHERE reimb_status_id = ?";
 			
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setString(1, s);
+			ps.setInt(1, statusId);
 
 			ResultSet rs = ps.executeQuery();
 			List<Reimbursement> r = new ArrayList<>();
@@ -209,6 +222,35 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 		}
 	
 	}
+	
+	
+//	@Override
+//	public List<Reimbursement> viewPendingStatus(String s) {
+//		log.debug("attempting to find reimbursements with pending status by credentials from DB");
+//		try (Connection c = ConnectionUtil.getConnection()) {
+//
+//			//if (UserDao.currentIplementation.)
+//			
+//			String sql = "SELECT * FROM ERS_REIMBURSEMENT " 
+//					+ "LEFT JOIN ERS_REIMBURSEMENT_STATUS ON (ERS_REIMBURSEMENT.reimb_status_id = ERS_REIMBURSEMENT_STATUS.reimb_status_id) "
+//					+ "WHERE ERS_REIMBURSEMENT_STATUS.reimb_status = ?";
+//			
+//			PreparedStatement ps = c.prepareStatement(sql);
+//			ps.setString(1, s);
+//
+//			ResultSet rs = ps.executeQuery();
+//			List<Reimbursement> r = new ArrayList<>();
+//			while (rs.next()) {
+//				r.add(extractReimbursement(rs));
+//			}
+//			return r;
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	
+//	}
 
 	@Override
 	public void managerUpdateStatus(int statusId, int resolverId, int reimbId) {

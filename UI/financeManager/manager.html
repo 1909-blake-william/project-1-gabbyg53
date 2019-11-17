@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Employee Reimbursement System</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- bootstrap -->
-    <link rel="stylesheet" href="view-reimb.css">
+    <link rel="stylesheet" href="manager.css">
 </head>
 <body>
     
@@ -35,7 +35,7 @@
                 </li>
             </ul>
 
-            <form class="form-inline my-2 my-md-0">
+            <!-- <form class="form-inline my-2 my-md-0">
                 <input class="form-control" type="text" placeholder="Search">
             </form>
             <ul class="navbar-nav">
@@ -46,13 +46,14 @@
                         <a class="dropdown-item" href="#"  onclick="logout(event)">Logout</a>
                     </div>
                 </li>
-            </ul> 
+            </ul>  -->
         </div>
     </nav>
 
     <table class="table" id="reimbursement-table">
         <thead class="thead-dark">
             <tr>
+                <!-- <th scope="col">Id</th> -->
                 <th scope="col">Amount</th>
                 <th scope="col">DateSubmited</th>
                 <th scope="col">ResolveDate</th>
@@ -68,6 +69,22 @@
         </tbody>
     </table>
 
+    <br>
+    <br>
+
+    <h3>Filter by status</h3>
+    <form id="filter-by-status-form" onsubmit="filterByStatus(event)">
+        <div class="form-group">
+            <label for="reimbursement-status-select">status:</label>
+            <select class="form-control" id="filter-by-status-select">
+                <option>total</option>
+                <option>pending</option>
+                <option>approved</option>
+                <option>denied</option>
+            </select>
+        </div>
+        <button class="btn btn-danger" type="submit">Submit</button>
+    </form>
 </body>
 
 <!-- JS -->
