@@ -19,12 +19,6 @@ function login(event) {
     })
      .then(resp => resp.json())
      .then(data => {
-     //.then(resp => {
-       //  data = currentUser;
-         //if(resp.status === 201) {
-            //redirect
-      //       console.log('navigate to reimbursements')
-      //           console.log();
         if (data.role === 0) {
             //console.log(data);
              window.location = '/financeManager/manager.html';
@@ -35,6 +29,5 @@ function login(event) {
          else {
              document.getElementById('error-message').innerText = 'Failed to login';
          }
-        //}
      })
 }

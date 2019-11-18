@@ -45,7 +45,6 @@ function addReimbursementToTableSafe(reimbursement) {
     if (reimbursement.status === 2) { //pending
         const approveData = document.createElement('button');
         approveData.innerText = 1;
-        //approveData.onclick
         approveData.setAttribute('onclick', 'updateToApprove(this.value)');
         approveData.setAttribute('value', `${reimbursement.id}`);
         row.appendChild(approveData);
@@ -97,14 +96,12 @@ function getCurrentUserInfo() {
      .then(resp => resp.json())
      .then(data => {
          console.log(data);
-      //   document.getElementById('users-name').innerText = data.username
       currentUser = data; 
         refreshTable();
          console.log(currentUser);
      })
      .catch(err => {
          console.log(err);
-         //document.getElementById('error-id').innerText = err;
          window.location = '/login/login.html'; ///login/login.html
      })
 }
@@ -120,10 +117,9 @@ function logout(event) {
         credentials: 'include'
     })
     .then(resp => {
-        console.log("help")
         getCurrentUserInfo();
     })
-    .catch(err => console.log(err));
+   // .catch(err => console.log(err));
 }
 
 /*async function updateToApprove() {
@@ -185,7 +181,6 @@ function updateToDeny(reimbId) {
 
 function filterByStatus(event) {
     event.preventDefault();
-    console.log("please");
     const status = document.getElementById('filter-by-status-select').value;
     console.log(status);
     if (status === "total") {
@@ -231,5 +226,5 @@ function filterByStatus(event) {
 }
 
 getCurrentUserInfo();
-console.log(currentUser);
+//console.log(currentUser);
 //refreshTable();

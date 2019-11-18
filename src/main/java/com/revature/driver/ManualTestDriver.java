@@ -29,19 +29,11 @@ public class ManualTestDriver {
 			System.out.println(upw);
 		});
 		
-		//userDao.findByUsernameAndPassword(u, pw);
 		System.out.println(userDao.findByUsernameAndPassword(u, pw));
 		
 		String r = "manager";
 		System.out.println("find manager");
 		System.out.println(userDao.findRole(r));
-		
-		//String s = "pending";
-//		int s = 2;
-//		System.out.println("find all pending status");
-//		reimbDao.findByStatus(s).forEach(stat -> {
-//			System.out.println(stat);
-//		});	
 
 		Timestamp t = new Timestamp(System.currentTimeMillis());
 	

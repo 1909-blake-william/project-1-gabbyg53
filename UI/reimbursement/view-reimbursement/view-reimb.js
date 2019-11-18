@@ -115,15 +115,13 @@ function refreshTable() {
      })
      .then(resp => resp.json())
      .then(data => {
-         console.log(data.username);
-      //   document.getElementById('users-name').innerText = data.username
+        // console.log(data.username);
          refreshTable();
          currentUser = data;
          console.log(currentUser.username);
      })
      .catch(err => {
          console.log(err);
-         //document.getElementById('error-id').innerText = err;
          window.location = '/login/login.html'; ///login/login.html
      })
  }

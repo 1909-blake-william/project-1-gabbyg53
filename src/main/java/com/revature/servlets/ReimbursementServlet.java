@@ -40,21 +40,11 @@ public class ReimbursementServlet extends HttpServlet {
 		String[] path = req.getRequestURI().split("/");
 		System.out.println("yo"+Arrays.toString(path));
 		System.out.println(path.length);
-		//System.out.println((path[2]));
 		if (path.length <= 3) {//[2] == "reimbursements") {
-			//System.out.println("length <= 3");
-			//String username = req.getParameter("ers_username"); //username
 			String role = req.getParameter("ers_user_role");
 			
 			reimbs = reimbDao.findAll();
-			System.out.println("all usernames");
-//			if (role != null) { // find by username
-//				reimbs = reimbDao.findByUsername(role);
-//				System.out.println("username");
-//			} else { // find all
-//				reimbs = reimbDao.findAll();
-//				System.out.println("all usernames");
-//			}		
+			System.out.println("all usernames");	
 		} else if (path.length == 5) {
 			System.out.println("somethings");
 			System.out.println(path[4]);
@@ -72,7 +62,6 @@ public class ReimbursementServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		// read the reimbursements from the request body
 				Reimbursement r = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
 
@@ -98,30 +87,8 @@ public class ReimbursementServlet extends HttpServlet {
 		int resolverId = Integer.parseInt(fetchResolver);
 		int rId = Integer.parseInt(fetchReimbId);
 		
-		reimbDao.managerUpdateStatus(stat, resolverId, rId);  //save(r);
+		reimbDao.managerUpdateStatus(stat, resolverId, rId);
 
-		//Reimbursement r = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
-
-		//System.out.println(r);
-		//String[] path = req.getRequestURI().split("/");
-//		if ("/ERS/reimbursements/status".equals(req.getRequestURI())) { //update
-//			reimbDao.managerUpdateStatus(r.getStatus(), r.getResolver(), r.getId());	
-//		}
-//		if (path.length == 9) {
-//			System.out.println("approve or deny");
-//			if (path[4].equals(3)) {
-//				
-//			}
-//			else if (path[4].equals(2)) {
-//				
-//			}
-//		}
-		
-		//reimbDao.managerUpdateStatus(r.getStatus(), r.getResolver(), r.getId());  //save(r);
-
-		//String json = om.writeValueAsString(r);
-
-		//resp.getWriter().write(json);
 		resp.setStatus(201); // created status code
 	}
 
