@@ -90,11 +90,11 @@ public class ReimbursementServlet extends HttpServlet {
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String fetchStatus = req.getParameter("resolver");
-		String fetchResolver = req.getParameter("status");
+		String fetchStatus = req.getParameter("status");
+		String fetchResolver = req.getParameter("resolver");
 		String fetchReimbId = req.getParameter("id");
 		
-		int stat = Integer.parseInt(fetchResolver);
+		int stat = Integer.parseInt(fetchStatus);
 		int resolverId = Integer.parseInt(fetchResolver);
 		int rId = Integer.parseInt(fetchReimbId);
 		

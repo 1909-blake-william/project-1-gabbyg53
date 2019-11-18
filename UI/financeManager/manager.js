@@ -83,6 +83,7 @@ function refreshTable() {
       fetch('http://localhost:8080/ERS/reimbursements')
       .then(res => res.json())
       .then(data => {
+          //console.log(currentUser);
           data.forEach(addReimbursementToTableSafe)
       })
       .catch(console.log);
@@ -95,11 +96,11 @@ function getCurrentUserInfo() {
      })
      .then(resp => resp.json())
      .then(data => {
-         //console.log(data.username);
+         console.log(data);
       //   document.getElementById('users-name').innerText = data.username
-         refreshTable();
-         currentUser = data;
-         //console.log(currentUser.username);
+      currentUser = data; 
+        refreshTable();
+         console.log(currentUser);
      })
      .catch(err => {
          console.log(err);
@@ -119,6 +120,7 @@ function logout(event) {
         credentials: 'include'
     })
     .then(resp => {
+        console.log("help")
         getCurrentUserInfo();
     })
     .catch(err => console.log(err));
@@ -138,7 +140,8 @@ function logout(event) {
 }*/
 
 function updateToApprove(reimbId) {
-    fetch(`http://localhost:8080/ERS/reimbursements?status=2&resolver=${currentUser.id}&id=${reimbId}`,{ //update
+    console.log(currentUser);
+    fetch(`http://localhost:8080/ERS/reimbursements?status=1&resolver=${currentUser.id}&id=${reimbId}`,{ //update
         method: 'PUT',
         headers: {
             'content-type': 'application/json'
@@ -227,4 +230,5 @@ function filterByStatus(event) {
 }
 
 getCurrentUserInfo();
+console.log(currentUser);
 //refreshTable();
