@@ -35,11 +35,16 @@ function addReimbursementToTableSafe(reimbursement) {
     row.appendChild(amountData);
 
     const dateSubmitData = document.createElement('td'); //get currDateTime
-    dateSubmitData.innerText = reimbursement.dateSubmitted;//new Date(reimbursement.dateSubmitted);
+    dateSubmitData.innerText = new Date(reimbursement.dateSubmitted).toLocaleDateString("en-US");
+    //console.log(dateSubmitData);
     row.appendChild(dateSubmitData);
 
     const resolveDateData = document.createElement('td');
-    resolveDateData.innerText = reimbursement.resolveDate;//new Date(reimbursement.resolveDateData);
+    resolveDateData.innerText = new Date(reimbursement.resolveDateData);
+    //console.log(resolveDateData);
+    if (!reimbursement.resolveDateData) {
+        resolveDateData.innerText = "not resolved";
+    }
     row.appendChild(resolveDateData);
 
     const memoData = document.createElement('td');
@@ -70,7 +75,6 @@ function addReimbursementToTableSafe(reimbursement) {
         document.getElementById('reimbursement-table-body').appendChild(row);
     }
     console.log(reimbursement);
-
 }
 
 function getReimbFromInputs() {
@@ -86,7 +90,7 @@ function getReimbFromInputs() {
 
     const reimbursement = {
         amount: reimbAmount,
-        dateSubmitted: new Date().toDateString,
+        //dateSubmitted: new Date(),
         resolveDate: null,
         description: reimbMemo,
         author: reimbAuthor,
@@ -116,6 +120,7 @@ function refreshTable() {
      .then(resp => resp.json())
      .then(data => {
         // console.log(data.username);
+        document.getElementById('reimbursement-table-body').innerText = '';
          refreshTable();
          currentUser = data;
          console.log(currentUser.username);

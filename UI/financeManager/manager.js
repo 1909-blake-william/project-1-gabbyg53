@@ -8,15 +8,18 @@ function addReimbursementToTableSafe(reimbursement) {
 
     // create all the td elements and append them to the row
     const amountData = document.createElement('td');
-    amountData.innerText = reimbursement.amount;
+    amountData.innerText = reimbursement.amount; //"$" + reimbursement.amount
     row.appendChild(amountData);
 
-    const dateSubmitData = document.createElement('td'); //get currDateTime
-    dateSubmitData.innerText = reimbursement.dateSubmitted;//new Date(reimbursement.dateSubmitted);
+    const dateSubmitData = document.createElement('td');
+    dateSubmitData.innerText = new Date(reimbursement.dateSubmitted).toLocaleDateString("en-US");
     row.appendChild(dateSubmitData);
 
     const resolveDateData = document.createElement('td');
-    resolveDateData.innerText = reimbursement.resolveDate;//new Date(reimbursement.resolveDateData);
+    resolveDateData.innerText = new Date(reimbursement.resolveDateData).toLocaleDateString("en-US");
+    if (!reimbursement.resolveDateData) {
+        resolveDateData.innerText = "not resolved";
+    }
     row.appendChild(resolveDateData);
 
     const memoData = document.createElement('td');
@@ -89,21 +92,21 @@ function refreshTable() {
 }
 
 function getCurrentUserInfo() {
-     fetch('http://localhost:8080/ERS/auth/session-user', {
-         credentials: 'include',
-         mode: 'cors'
-     })
-     .then(resp => resp.json())
-     .then(data => {
-         console.log(data);
-      currentUser = data; 
+    fetch('http://localhost:8080/ERS/auth/session-user', {
+        credentials: 'include'
+    })
+    .then(resp => resp.json())
+    .then(data => {
+       // console.log(data.username);
+       document.getElementById('reimbursement-table-body').innerText = '';
         refreshTable();
-         console.log(currentUser);
-     })
-     .catch(err => {
-         console.log(err);
-         window.location = '/login/login.html'; ///login/login.html
-     })
+        currentUser = data;
+        console.log(currentUser.username);
+    })
+    .catch(err => {
+        console.log(err);
+        window.location = '/login/login.html'; ///login/login.html
+    })
 }
 
 function logout(event) {
@@ -148,6 +151,7 @@ function updateToApprove(reimbId) {
     .then(resp => {
         console.log("approved");
         if (resp.status === 201) {
+            document.getElementById('reimbursement-table-body').innerText = '';
             refreshTable();
         }
         else {
@@ -170,6 +174,7 @@ function updateToDeny(reimbId) {
     .then(resp =>{
         console.log("denied");
         if (resp.status === 201) {
+            document.getElementById('reimbursement-table-body').innerText = '';
             refreshTable();
         }
         else {
@@ -226,5 +231,3 @@ function filterByStatus(event) {
 }
 
 getCurrentUserInfo();
-//console.log(currentUser);
-//refreshTable();
