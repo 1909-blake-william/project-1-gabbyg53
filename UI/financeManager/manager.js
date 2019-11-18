@@ -63,21 +63,29 @@ function addReimbursementToTableSafe(reimbursement) {
 }
 
 
-async function refreshTable() {
-    const json = await
-    //string interpoloation fetch?
-    fetch('http://localhost:8080/ERS/reimbursements', {
-        credentials: 'include',
-        mode: 'cors',
-    })
-        .then(res => res.json())
-        // .then(data => {
-        //     await data.forEach(addReimbursementToTableSafe)
-        // })
-        if (json && json.length) {
-            json.forEach(addReimbursementToTableSafe);
-        }
+//async function refreshTable() {
+function refreshTable() {
+    // const json = await
+    // //string interpoloation fetch?
+    // fetch('http://localhost:8080/ERS/reimbursements', {
+    //     credentials: 'include',
+    //     mode: 'cors',
+    // })
+    //     .then(res => res.json())
+    //     // .then(data => {
+    //     //     await data.forEach(addReimbursementToTableSafe)
+    //     // })
+    //     if (json && json.length) {
+    //         json.forEach(addReimbursementToTableSafe);
+    //     }
       //  .catch(console.log);
+
+      fetch('http://localhost:8080/ERS/reimbursements')
+      .then(res => res.json())
+      .then(data => {
+          data.forEach(addReimbursementToTableSafe)
+      })
+      .catch(console.log);
 }
 
 function getCurrentUserInfo() {
@@ -113,12 +121,13 @@ function logout(event) {
     .then(resp => {
         getCurrentUserInfo();
     })
+    .catch(err => console.log(err));
 }
 
-async function updateToApprove() {
+/*async function updateToApprove() {
     let reimbId;
     const result = await
-    fetch(`http://localhost:8080/ERS/reimbursements?status=2&resolver=${currentUser.id}&id=${reimbId}`, {
+    fetch(`http://localhost:8080/ERS/reimbursements?status=1&resolver=${currentUser.id}&id=${reimbId}`, {
     method: 'PUT',       
     credentials: 'include',
            mode: 'cors',
@@ -126,9 +135,9 @@ async function updateToApprove() {
     if (result.ok) {
        await refreshTable();
     }
-}
+}*/
 
-/*function updateToApprove(reimbId) {
+function updateToApprove(reimbId) {
     fetch(`http://localhost:8080/ERS/reimbursements?status=2&resolver=${currentUser.id}&id=${reimbId}`,{ //update
         method: 'PUT',
         headers: {
@@ -147,10 +156,10 @@ async function updateToApprove() {
         }
     })
     .catch(err => console.log(err));
-}*/
+}
 
 function updateToDeny(reimbId) {
-    fetch(`http://localhost:8080/ERS/reimbursements?status=3&resolver=${currentUser.id}&id=${reimbId}`,{
+    fetch(`http://localhost:8080/ERS/reimbursements?status=0&resolver=${currentUser.id}&id=${reimbId}`,{
         method: 'PUT',
         headers: {
             'content-type': 'application/json'
