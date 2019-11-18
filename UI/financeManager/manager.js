@@ -63,17 +63,21 @@ function addReimbursementToTableSafe(reimbursement) {
 }
 
 
-function refreshTable() {
+async function refreshTable() {
+    const json = await
     //string interpoloation fetch?
     fetch('http://localhost:8080/ERS/reimbursements', {
         credentials: 'include',
         mode: 'cors',
     })
         .then(res => res.json())
-        .then(data => {
-            data.forEach(addReimbursementToTableSafe)
-        })
-        .catch(console.log);
+        // .then(data => {
+        //     await data.forEach(addReimbursementToTableSafe)
+        // })
+        if (json && json.length) {
+            json.forEach(addReimbursementToTableSafe);
+        }
+      //  .catch(console.log);
 }
 
 function getCurrentUserInfo() {
@@ -111,7 +115,20 @@ function logout(event) {
     })
 }
 
-function updateToApprove(reimbId) {
+async function updateToApprove() {
+    let reimbId;
+    const result = await
+    fetch(`http://localhost:8080/ERS/reimbursements?status=2&resolver=${currentUser.id}&id=${reimbId}`, {
+    method: 'PUT',       
+    credentials: 'include',
+           mode: 'cors',
+       });
+    if (result.ok) {
+       await refreshTable();
+    }
+}
+
+/*function updateToApprove(reimbId) {
     fetch(`http://localhost:8080/ERS/reimbursements?status=2&resolver=${currentUser.id}&id=${reimbId}`,{ //update
         method: 'PUT',
         headers: {
@@ -120,7 +137,7 @@ function updateToApprove(reimbId) {
         mode: 'cors',
         credentials: 'include'
     })
-    .then(resp =>{
+    .then(resp => {
         console.log("approved");
         if (resp.status === 201) {
             refreshTable();
@@ -130,7 +147,7 @@ function updateToApprove(reimbId) {
         }
     })
     .catch(err => console.log(err));
-}
+}*/
 
 function updateToDeny(reimbId) {
     fetch(`http://localhost:8080/ERS/reimbursements?status=3&resolver=${currentUser.id}&id=${reimbId}`,{
@@ -201,3 +218,4 @@ function filterByStatus(event) {
 }
 
 getCurrentUserInfo();
+//refreshTable();
