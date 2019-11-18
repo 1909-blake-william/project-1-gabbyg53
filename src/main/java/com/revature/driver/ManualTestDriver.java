@@ -37,16 +37,24 @@ public class ManualTestDriver {
 		System.out.println(userDao.findRole(r));
 		
 		//String s = "pending";
+//		int s = 2;
+//		System.out.println("find all pending status");
+//		reimbDao.findByStatus(s).forEach(stat -> {
+//			System.out.println(stat);
+//		});	
+
+		Timestamp t = new Timestamp(System.currentTimeMillis());
+	
+		Reimbursement re = new Reimbursement(59, 50.00, t, null, "mental stability after my friend got fired",21, 0, 2, 4);
+		reimbDao.save(re);
+		Reimbursement ree = new Reimbursement(60, 400.00, t, null, "extra help after applying for disability",22, 0, 2, 4);
+		reimbDao.save(ree);
+		
 		int s = 2;
 		System.out.println("find all pending status");
 		reimbDao.findByStatus(s).forEach(stat -> {
 			System.out.println(stat);
 		});	
-
-		Timestamp t = new Timestamp(System.currentTimeMillis());
-	
-//		Reimbursement re = new Reimbursement(59, 50.00, t, null, "wkms",1, 0, 0, 4);
-//		reimbDao.save(re);
-//		System.out.println(re);
+		//		System.out.println(re);
 	}
 }

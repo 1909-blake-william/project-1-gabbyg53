@@ -162,6 +162,7 @@ function updateToApprove(reimbId) {
 }
 
 function updateToDeny(reimbId) {
+    console.log(currentUser);
     fetch(`http://localhost:8080/ERS/reimbursements?status=0&resolver=${currentUser.id}&id=${reimbId}`,{
         method: 'PUT',
         headers: {
