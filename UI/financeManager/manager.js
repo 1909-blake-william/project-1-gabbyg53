@@ -1,5 +1,4 @@
 let currentUser;
-//get all rows on page load from db, then append row to table
 
 function addReimbursementToTableSafe(reimbursement) {
 
@@ -8,7 +7,7 @@ function addReimbursementToTableSafe(reimbursement) {
 
     // create all the td elements and append them to the row
     const amountData = document.createElement('td');
-    amountData.innerText = reimbursement.amount; //"$" + reimbursement.amount
+    amountData.innerText = '$' + reimbursement.amount;
     row.appendChild(amountData);
 
     const dateSubmitData = document.createElement('td');
@@ -16,9 +15,12 @@ function addReimbursementToTableSafe(reimbursement) {
     row.appendChild(dateSubmitData);
 
     const resolveDateData = document.createElement('td');
-    resolveDateData.innerText = new Date(reimbursement.resolveDateData).toLocaleDateString("en-US");
-    if (!reimbursement.resolveDateData) {
+    //resolveDateData.innerText = new Date(reimbursement.resolveDate).toLocaleDateString("en-US");
+    if (!reimbursement.resolveDate) {
         resolveDateData.innerText = "not resolved";
+    }
+    else {
+        resolveDateData.innerText = new Date(reimbursement.resolveDate).toLocaleDateString("en-US");//reimbursement.resolveDate;
     }
     row.appendChild(resolveDateData);
 
@@ -27,21 +29,21 @@ function addReimbursementToTableSafe(reimbursement) {
     row.appendChild(memoData);
 
     const authorData = document.createElement('td');
-    authorData.innerText = reimbursement.author; //id
+    authorData.innerText = reimbursement.author;
     row.appendChild(authorData);
 
     const resolverData = document.createElement('td');
-    resolverData.innerText = reimbursement.resolver; //id
+    resolverData.innerText = reimbursement.resolver;
     if (reimbursement.resolver === 0 ) {
         resolverData.innerText = null;
     }
-    row.appendChild(resolverData); //maybe don't need?
+    row.appendChild(resolverData);
 
     const statusData = document.createElement('td');
-    statusData.innerText = reimbursement.status; //if admin select
-    row.appendChild(statusData); //if status === '2' set innertext 'pending'
+    statusData.innerText = reimbursement.status;
+    row.appendChild(statusData);
 
-    const typeData = document.createElement('td'); //select
+    const typeData = document.createElement('td');
     typeData.innerText = reimbursement.type;
     row.appendChild(typeData);
 
@@ -61,7 +63,6 @@ function addReimbursementToTableSafe(reimbursement) {
 
     // append the row into the table
     document.getElementById('reimbursement-table-body').appendChild(row);
-    //console.log(reimbursement);
 }
 
 
@@ -97,7 +98,6 @@ function getCurrentUserInfo() {
     })
     .then(resp => resp.json())
     .then(data => {
-       // console.log(data.username);
        document.getElementById('reimbursement-table-body').innerText = '';
         refreshTable();
         currentUser = data;
@@ -105,7 +105,7 @@ function getCurrentUserInfo() {
     })
     .catch(err => {
         console.log(err);
-        window.location = '/login/login.html'; ///login/login.html
+        window.location = '/login/login.html';
     })
 }
 
@@ -140,7 +140,7 @@ function logout(event) {
 
 function updateToApprove(reimbId) {
     console.log(currentUser);
-    fetch(`http://localhost:8080/ERS/reimbursements?status=1&resolver=${currentUser.id}&id=${reimbId}`,{ //update
+    fetch(`http://localhost:8080/ERS/reimbursements?status=1&resolver=${currentUser.id}&id=${reimbId}`,{
         method: 'PUT',
         headers: {
             'content-type': 'application/json'

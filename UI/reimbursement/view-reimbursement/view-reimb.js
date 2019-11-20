@@ -31,42 +31,45 @@ function addReimbursementToTableSafe(reimbursement) {
 
     // create all the td elements and append them to the row
     const amountData = document.createElement('td');
-    amountData.innerText = reimbursement.amount;
+    amountData.innerText = '$' + reimbursement.amount;
     row.appendChild(amountData);
 
-    const dateSubmitData = document.createElement('td'); //get currDateTime
+    const dateSubmitData = document.createElement('td');
     dateSubmitData.innerText = new Date(reimbursement.dateSubmitted).toLocaleDateString("en-US");
-    //console.log(dateSubmitData);
+    console.log(dateSubmitData);
     row.appendChild(dateSubmitData);
 
     const resolveDateData = document.createElement('td');
-    resolveDateData.innerText = new Date(reimbursement.resolveDateData);
-    //console.log(resolveDateData);
-    if (!reimbursement.resolveDateData) {
+    //resolveDateData.innerText = new Date(reimbursement.resolveDate).toLocaleDateString("en-US");
+    if (!reimbursement.resolveDate) {
         resolveDateData.innerText = "not resolved";
     }
+    else {
+        resolveDateData.innerText = new Date(reimbursement.resolveDate).toLocaleDateString("en-US");//reimbursement.resolveDate;
+    }
     row.appendChild(resolveDateData);
+    console.log(resolveDateData);
 
     const memoData = document.createElement('td');
     memoData.innerText = reimbursement.description;
     row.appendChild(memoData);
 
     const authorData = document.createElement('td');
-    authorData.innerText = reimbursement.author; //id
+    authorData.innerText = reimbursement.author;
     row.appendChild(authorData);
 
     const resolverData = document.createElement('td');
-    resolverData.innerText = reimbursement.resolver; //id
+    resolverData.innerText = reimbursement.resolver;
     if (reimbursement.resolver === 0 ) {
         resolverData.innerText = null;
     }
-    row.appendChild(resolverData); //maybe don't need?
+    row.appendChild(resolverData);
 
     const statusData = document.createElement('td');
-    statusData.innerText = reimbursement.status; //if admin select
+    statusData.innerText = reimbursement.status;
     row.appendChild(statusData);
 
-    const typeData = document.createElement('td'); //select
+    const typeData = document.createElement('td');
     typeData.innerText = reimbursement.type;
     row.appendChild(typeData);
 
@@ -91,20 +94,19 @@ function getReimbFromInputs() {
     const reimbursement = {
         amount: reimbAmount,
         //dateSubmitted: new Date(),
-        resolveDate: null,
+       // resolveDate: newDate(),// null,
         description: reimbMemo,
         author: reimbAuthor,
         resolver: null,
         status: 2,
         type: typeId
     }
-    console.log(reimbursement);
+    //console.log(reimbursement);
     return reimbursement;
 }
 
 
 function refreshTable() {
-    //string interpoloation fetch?
     fetch('http://localhost:8080/ERS/reimbursements')
         .then(res => res.json())
         .then(data => {
@@ -119,7 +121,6 @@ function refreshTable() {
      })
      .then(resp => resp.json())
      .then(data => {
-        // console.log(data.username);
         document.getElementById('reimbursement-table-body').innerText = '';
          refreshTable();
          currentUser = data;
